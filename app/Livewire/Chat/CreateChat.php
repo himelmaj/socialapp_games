@@ -14,42 +14,25 @@ class CreateChat extends Component
     public $message = 'hello';
 
 
-    public function check_conversation($receiver_id)
+    public function checkconversation($receiverId)
     {
-        // dd($reciver_id);
+        // dd($receiverId);
 
-        $checked_conversation = Conversation::where('sender_id', auth()
-            ->user()->id)
-            ->where('receiver_id', $receiver_id)
-            ->orWhere('sender_id', $receiver_id)
-            ->where('receiver_id', auth()->user()->id)
-            ->get();
+        $checkedConversation = Conversation::where('receiver_id', auth()->user()->id)->where('sender_id', $receiverId)->orWhere('receiver_id', $receiverId)->where('sender_id', auth()->user()->id)->get();
 
-        if ($checked_conversation->count() <= 0) {
-            // dd('no conversation');
+        if(count($checkedConversation) == 0){
+            // dd('conversation not exist');
+            $createdConversation = Conversation::create(['receiver_id' => $receiverId, 'sender_id' => auth()->user()->id, 'last_time_message' => now()]);
+            $createdMessage = Message::create(['conversation_id'=> $createdConversation->id, 'sender_id' => auth()->user()->id, 'receiver_id' => $receiverId, 'body' => $this->message]);
 
-            $checked_conversation = Conversation::create([
-                'receiver_id' => $receiver_id,
-                'sender_id' => auth()->user()->id,
-                'last_time_message' => now(),
-            ]);
+            $createdConversation->last_time_message = $createdMessage->created_at;
+            $createdConversation->save();
 
-            $created_message = Message::create([
-                'conversation_id' => $checked_conversation->id,
-                'sender_id' => auth()->user()->id,
-                'receiver_id' => $receiver_id,
-                'body' => "hello"
-            ]);
-
-            $checked_conversation->last_time_message = $created_message->created_at;
-            $checked_conversation->save();
-            dd($created_message);
             dd('saved');
 
-        } elseif ($checked_conversation->count() > 0) {
-            dd($checked_conversation);
+        }else if(count($checkedConversation) >= 1){
+            dd('conversation already exist');
         }
-
     }
 
 

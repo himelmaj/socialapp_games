@@ -20,10 +20,11 @@ Route::view('/', 'welcome');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::view('home', 'home')->name('home');
     Route::view('profile', 'profile')->name('profile');
     Route::view('chats', 'chats')->name('chats');
     Route::view('add-chat', 'add-chat')->name('add-chat');
+    Route::view('contact', 'contact')->name('contact');
  });
 
 
