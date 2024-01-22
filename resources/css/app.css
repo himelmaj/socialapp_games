@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#chats {
+    display: grid;
+    grid-template-areas: "aside main main" "aside main main" "aside main main " "aside footer footer";
+    
+    grid-template-columns: 420px 1fr;
+    grid-template-rows: 1fr auto;
+}
