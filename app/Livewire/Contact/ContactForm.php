@@ -4,6 +4,7 @@ namespace App\Livewire\Contact;
 
 use App\Models\Contact;
 use Livewire\Component;
+use Illuminate\Validation\ValidationException;
 
 class ContactForm extends Component
 {
@@ -18,8 +19,12 @@ class ContactForm extends Component
 
     public function submitForm()
     {
-        $this->validate();
-
+        try {
+            $this->validate();
+        } catch (ValidationException $e) {
+            $this->reset(['name', 'email', 'message']);
+            throw $e;
+        }
         Contact::create([
             'name' => $this->name,
             'email' => $this->email,
@@ -27,6 +32,8 @@ class ContactForm extends Component
         ]);
 
         $this->reset(['name', 'email', 'message']);
+        $this->dispatch('message-sended');
+
     }
 
     public function render()
