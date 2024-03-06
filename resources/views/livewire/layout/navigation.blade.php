@@ -34,7 +34,7 @@ new class extends Component {
                     </x-nav-link>
                 </div>
 
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                {{-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('chats')" :active="request()->routeIs('chats')" wire:navigate>
                         {{ __('Chats') }}
                     </x-nav-link>
@@ -44,7 +44,7 @@ new class extends Component {
                     <x-nav-link :href="route('add-chat')" :active="request()->routeIs('add-chat')" wire:navigate>
                         {{ __('Add Chat') }}
                     </x-nav-link>
-                </div>
+                </div> --}}
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')" wire:navigate>
@@ -86,12 +86,9 @@ new class extends Component {
                         </button>
                     </x-slot>
                 </x-dropdown>
-                @if (preg_match('/^http/', auth()->user()->avatar))
-                    <img src="{{ auth()->user()->avatar }}" alt="" srcset="" class="rounded-full w-10">
-                @else
-                    <img src="{{ asset('avatar/' . auth()->user()->avatar) }}" alt="" srcset=""
-                        class="rounded-full w-10">
-                @endif
+                <img src="{{ preg_match('/^http/', auth()->user()->avatar) || (auth()->user()->avatar == null) ? 'https://ui-avatars.com/api/?name=' . str_replace(' ', '+', auth()->user()->name) : asset('storage/' . auth()->user()->avatar) }}"
+                alt="Profile Avatar" class="w-10 h-10 overflow-hidden rounded-full">
+            
             </div>
 
             <!-- Hamburger -->
@@ -117,7 +114,7 @@ new class extends Component {
                 {{ __('Home') }}
             </x-responsive-nav-link>
         </div>
-
+{{-- 
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('chats')" :active="request()->routeIs('chats')" wire:navigate>
                 {{ __('Chats') }}
@@ -128,7 +125,7 @@ new class extends Component {
             <x-responsive-nav-link :href="route('add-chat')" :active="request()->routeIs('add-chat')" wire:navigate>
                 {{ __('Add Chat') }}
             </x-responsive-nav-link>
-        </div>
+        </div> --}}
 
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')" wire:navigate>

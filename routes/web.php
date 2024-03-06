@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GameController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -22,8 +23,9 @@ Route::view('/', 'welcome');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('home', 'home')->name('home');
     Route::view('profile', 'profile')->name('profile');
-    Route::view('chats', 'chats')->name('chats');
-    Route::view('add-chat', 'add-chat')->name('add-chat');
+    Route::get('/game/{game:id}', [GameController::class, 'game'])->name('game');
+    // Route::view('chats', 'chats')->name('chats');
+    // Route::view('add-chat', 'add-chat')->name('add-chat');
     Route::view('contact', 'contact')->name('contact');
  });
 
